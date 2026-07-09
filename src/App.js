@@ -215,9 +215,6 @@ export default function App() {
           )}
         </button>
 
-        <div className="form-footer">
-          Already have an account? <a href="#">Sign In</a>
-        </div>
       </form>
     </div>
   );
