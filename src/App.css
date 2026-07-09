@@ -1,38 +1,356 @@
-.App {
-  text-align: center;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* ----- main container with glassmorphism effect ----- */
+.form-app {
+    width: 420px;
+    max-width: 100%;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 32px;
+    padding: 40px 36px 44px;
+    box-shadow: 
+        0 20px 60px rgba(102, 126, 234, 0.3),
+        0 8px 24px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.form-app:hover {
+    transform: translateY(-4px);
+    box-shadow: 
+        0 24px 72px rgba(102, 126, 234, 0.35),
+        0 8px 28px rgba(0, 0, 0, 0.12);
 }
 
-.App-link {
-  color: #61dafb;
+/* ----- form header with gradient ----- */
+.form-header {
+    text-align: center;
+    margin-bottom: 32px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.form-header-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 8px;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+}
+
+.form-title {
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+}
+
+.form-subtitle {
+    color: #7a8ba0;
+    font-size: 0.95rem;
+    font-weight: 400;
+}
+
+/* ----- form groups ----- */
+.form-group {
+    margin-bottom: 22px;
+    position: relative;
+}
+
+/* label with floating effect */
+.form-label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #4a5a6e;
+    margin-bottom: 6px;
+    letter-spacing: 0.3px;
+    transition: color 0.2s ease;
+}
+
+.form-label .required {
+    color: #e74c3c;
+    margin-left: 2px;
+}
+
+/* input wrapper for icon */
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 14px;
+    font-size: 1.1rem;
+    color: #a0b0c4;
+    transition: color 0.2s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ----- input fields with unique gradient border ----- */
+.form-input {
+    width: 100%;
+    padding: 14px 16px 14px 44px;
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    border: 2px solid #e2e8f0;
+    border-radius: 14px;
+    background: #f8fafc;
+    color: #1a2a3a;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+    position: relative;
+}
+
+.form-input:focus {
+    border-color: #667eea;
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1), 0 4px 12px rgba(0, 0, 0, 0.02);
+}
+
+.form-input:focus + .input-icon,
+.form-input:focus ~ .input-icon {
+    color: #667eea;
+}
+
+/* input with error state */
+.form-input.error {
+    border-color: #e74c3c;
+    background: #fff8f8;
+    box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.08);
+}
+
+.form-input.error:focus {
+    border-color: #e74c3c;
+    box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.12);
+}
+
+/* input with success state (when valid) */
+.form-input.success {
+    border-color: #2ecc71;
+    background: #f8fff8;
+}
+
+/* input placeholder styling */
+.form-input::placeholder {
+    color: #b0c0d4;
+    font-weight: 400;
+    font-size: 0.95rem;
+}
+
+/* password toggle button */
+.password-toggle {
+    position: absolute;
+    right: 14px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: #a0b0c4;
+    padding: 4px;
+    transition: color 0.2s ease;
+    z-index: 1;
+}
+
+.password-toggle:hover {
+    color: #667eea;
+}
+
+/* ----- error message styling ----- */
+.error-message {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+    font-size: 0.85rem;
+    color: #e74c3c;
+    font-weight: 500;
+    animation: slideDown 0.3s ease;
+}
+
+.error-message::before {
+    content: "⚠";
+    font-size: 0.9rem;
+}
+
+@keyframes slideDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ----- submit button with gradient ----- */
+.submit-btn {
+    width: 100%;
+    padding: 16px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    color: white;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-top: 8px;
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+}
+
+.submit-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.submit-btn:hover::before {
+    left: 100%;
+}
+
+.submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(102, 126, 234, 0.4);
+}
+
+.submit-btn:active {
+    transform: translateY(0px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);
+}
+
+.submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.submit-btn .btn-icon {
+    margin-right: 8px;
+}
+
+/* ----- success state for form ----- */
+.form-success {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.form-success-icon {
+    font-size: 4rem;
+    display: block;
+    margin-bottom: 12px;
+    animation: popIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* ----- responsive adjustments ----- */
+@media (max-width: 480px) {
+    .form-app {
+        padding: 28px 20px 32px;
+        border-radius: 24px;
+    }
+
+    .form-title {
+        font-size: 1.6rem;
+    }
+
+    .form-input {
+        padding: 12px 14px 12px 40px;
+        font-size: 0.95rem;
+    }
+
+    .input-icon {
+        left: 12px;
+        font-size: 1rem;
+    }
+
+    .submit-btn {
+        padding: 14px;
+        font-size: 1rem;
+    }
+
+    .form-header-icon {
+        font-size: 2.5rem;
+    }
+}
+
+/* ----- loading spinner for submit button ----- */
+.spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid #ffffff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-right: 8px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ----- checkbox or additional elements styling ----- */
+.form-footer {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #7a8ba0;
+}
+
+.form-footer a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.form-footer a:hover {
+    color: #764ba2;
+    text-decoration: underline;
 }
