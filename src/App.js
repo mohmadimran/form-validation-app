@@ -1,7 +1,5 @@
-// Build a registration form with validations (email format, password length, required fields).
-// Show error messages dynamically.
-
 import React, { useState } from "react";
+import "./form-styles.css";
 
 export default function App() {
   const [formData, setFormData] = useState({
@@ -11,6 +9,8 @@ export default function App() {
   });
 
   const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // =========================
   // Handle Input Change
@@ -74,60 +74,150 @@ export default function App() {
     // Check if any errors exist
     const hasError = Object.values(errors).some((err) => err);
 
-    if (!hasError) {
-      alert("Registration Successful");
-      console.log(formData);
+    if (!hasError && Object.values(formData).every(val => val.trim())) {
+      setIsSubmitting(true);
+      
+      // Simulate API call
+      setTimeout(() => {
+        alert("🎉 Registration Successful!");
+        console.log(formData);
+        setIsSubmitting(false);
+        // Reset form
+        setFormData({ name: "", email: "", password: "" });
+        setErrors({});
+      }, 1500);
     }
   };
 
-  return (
-    <div style={{ width: "300px", margin: "50px auto" }}>
-      <h2>Registration Form</h2>
+  // Check if form is valid
+  const isFormValid = () => {
+    return (
+      formData.name.trim() &&
+      formData.email.trim() &&
+      formData.password.length >= 6 &&
+      !Object.values(errors).some(err => err)
+    );
+  };
 
-      <form onSubmit={handleSubmit}>
+  return (
+    <div className="form-app">
+      <div className="form-header">
+        <span className="form-header-icon">✨</span>
+        <h2 className="form-title">Create Account</h2>
+        <p className="form-subtitle">Join us and get started</p>
+      </div>
+
+      <form onSubmit={handleSubmit} noValidate>
         {/* Name */}
-        <div>
-          <input
-            type="text"
-            name="name"
-            placeholder="Enter Name"
-            value={formData.name}
-            onChange={handleChange}
-          />
+        <div className="form-group">
+          <label className="form-label">
+            Full Name <span className="required">*</span>
+          </label>
+          <div className="input-wrapper">
+            <span className="input-icon">👤</span>
+            <input
+              type="text"
+              name="name"
+              placeholder="Enter your full name"
+              value={formData.name}
+              onChange={handleChange}
+              className={`form-input ${
+                errors.name ? 'error' : 
+                formData.name && !errors.name ? 'success' : ''
+              }`}
+            />
+          </div>
           {errors.name && (
-            <p style={{ color: "red" }}>{errors.name}</p>
+            <div className="error-message">{errors.name}</div>
           )}
         </div>
 
         {/* Email */}
-        <div>
-          <input
-            type="text"
-            name="email"
-            placeholder="Enter Email"
-            value={formData.email}
-            onChange={handleChange}
-          />
+        <div className="form-group">
+          <label className="form-label">
+            Email Address <span className="required">*</span>
+          </label>
+          <div className="input-wrapper">
+            <span className="input-icon">📧</span>
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter your email"
+              value={formData.email}
+              onChange={handleChange}
+              className={`form-input ${
+                errors.email ? 'error' : 
+                formData.email && !errors.email ? 'success' : ''
+              }`}
+            />
+          </div>
           {errors.email && (
-            <p style={{ color: "red" }}>{errors.email}</p>
+            <div className="error-message">{errors.email}</div>
           )}
         </div>
 
         {/* Password */}
-        <div>
-          <input
-            type="password"
-            name="password"
-            placeholder="Enter Password"
-            value={formData.password}
-            onChange={handleChange}
-          />
+        <div className="form-group">
+          <label className="form-label">
+            Password <span className="required">*</span>
+          </label>
+          <div className="input-wrapper">
+            <span className="input-icon">🔒</span>
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Enter your password"
+              value={formData.password}
+              onChange={handleChange}
+              className={`form-input ${
+                errors.password ? 'error' : 
+                formData.password && !errors.password ? 'success' : ''
+              }`}
+            />
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? "👁️" : "👁️‍🗨️"}
+            </button>
+          </div>
           {errors.password && (
-            <p style={{ color: "red" }}>{errors.password}</p>
+            <div className="error-message">{errors.password}</div>
+          )}
+          {!errors.password && formData.password && formData.password.length > 0 && (
+            <div style={{ 
+              marginTop: '6px', 
+              fontSize: '0.8rem', 
+              color: '#2ecc71',
+              fontWeight: '500'
+            }}>
+              ✓ Password is valid
+            </div>
           )}
         </div>
 
-        <button type="submit">Register</button>
+        <button 
+          type="submit" 
+          className="submit-btn"
+          disabled={isSubmitting || !isFormValid()}
+        >
+          {isSubmitting ? (
+            <>
+              <span className="spinner"></span>
+              Creating Account...
+            </>
+          ) : (
+            <>
+              <span className="btn-icon">🚀</span>
+              Create Account
+            </>
+          )}
+        </button>
+
+        <div className="form-footer">
+          Already have an account? <a href="#">Sign In</a>
+        </div>
       </form>
     </div>
   );
